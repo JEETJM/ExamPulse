@@ -1,0 +1,37 @@
+{
+  "name": "exampulse",
+  "version": "1.0.0",
+  "description": "ExamSphere is a full-stack MEN Online Examination System designed for secure and efficient digital exams. It provides Student, Teacher, and Admin panels with authentication, exam management, question CRUD, timed exams, automatic result generation, analytics, notifications, announcements, and support management in one modern animated web platform.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "JEET MONDAL",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^5.1.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.3.1",
+    "ejs": "^3.1.10",
+    "ejs-mate": "^4.0.0",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.1",
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.6.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

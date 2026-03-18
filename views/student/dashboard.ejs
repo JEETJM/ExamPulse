@@ -1,0 +1,161 @@
+<!-- <% layout('layouts/boilerplate') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+  <h2 class="fw-bold text-light">Student Dashboard</h2>
+  <a href="/student/exams" class="btn btn-primary rounded-pill px-4">Browse Exams</a>
+</div>
+
+<div class="glass-card p-4 mb-4">
+  <h4 class="text-light mb-3">My Results</h4>
+  <div class="table-responsive">
+    <table class="table table-dark table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Exam</th>
+          <th>Marks</th>
+          <th>Percentage</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% results.forEach(result => { %>
+          <tr>
+            <td><%= result.exam?.title || 'N/A' %></td>
+            <td><%= result.obtainedMarks %> / <%= result.totalMarks %></td>
+            <td><%= result.percentage.toFixed(2) %>%</td>
+            <td><span class="badge <%= result.status === 'Pass' ? 'bg-success' : 'bg-danger' %>"><%= result.status %></span></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<% layout('layouts/boilerplate') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+  <h2 class="fw-bold text-light">Student Dashboard</h2>
+  <a href="/student/exams" class="btn btn-primary rounded-pill px-4">Browse Exams</a>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-md-6 col-lg-3">
+    <div class="glass-card p-4 dashboard-stat">
+      <h6 class="text-light-emphasis">Total Results</h6>
+      <h2 class="text-light"><%= results.length %></h2>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-3">
+    <div class="glass-card p-4 dashboard-stat">
+      <h6 class="text-light-emphasis">Passed</h6>
+      <h2 class="text-light"><%= results.filter(r => r.status === 'Pass').length %></h2>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-3">
+    <div class="glass-card p-4 dashboard-stat">
+      <h6 class="text-light-emphasis">Failed</h6>
+      <h2 class="text-light"><%= results.filter(r => r.status === 'Fail').length %></h2>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-3">
+    <div class="glass-card p-4 dashboard-stat">
+      <h6 class="text-light-emphasis">Average Score</h6>
+      <h2 class="text-light">
+        <%= results.length ? (results.reduce((sum, r) => sum + r.percentage, 0) / results.length).toFixed(0) : 0 %>%
+      </h2>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="glass-card p-4 mb-4">
+      <h4 class="text-light mb-3">My Results</h4>
+      <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle">
+          <thead>
+            <tr>
+              <th>Exam</th>
+              <th>Marks</th>
+              <th>Percentage</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% results.forEach(result => { %>
+              <tr>
+                <td><%= result.exam?.title || "N/A" %></td>
+                <td><%= result.obtainedMarks %> / <%= result.totalMarks %></td>
+                <td><%= result.percentage.toFixed(2) %>%</td>
+                <td>
+                  <span class="badge <%= result.status === 'Pass' ? 'bg-success' : 'bg-danger' %>">
+                    <%= result.status %>
+                  </span>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="glass-card p-4">
+      <h4 class="text-light mb-3">Recent Activity</h4>
+      <div class="notice-item mb-3">
+        <h6 class="text-light mb-1">Exam Attempts</h6>
+        <p class="text-light-emphasis mb-0">Track your recently submitted exams and improve weak areas.</p>
+      </div>
+      <div class="notice-item mb-3">
+        <h6 class="text-light mb-1">Preparation Progress</h6>
+        <p class="text-light-emphasis mb-0">Focus on accuracy, speed, and regular mock practice.</p>
+      </div>
+      <div class="notice-item">
+        <h6 class="text-light mb-1">System Updates</h6>
+        <p class="text-light-emphasis mb-0">Watch for new exams, notices, and platform announcements.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <div class="glass-card p-4 mb-4">
+      <h4 class="text-light mb-3">Recommended Books</h4>
+      <ul class="resource-list">
+        <li>Let Us OOPS</li>
+        <li>Operating System Concepts</li>
+        <li>DBMS by Korth</li>
+        <li>Computer Networks by Forouzan</li>
+      </ul>
+    </div>
+
+    <div class="glass-card p-4">
+      <h4 class="text-light mb-3">Quick Actions</h4>
+      <div class="d-grid gap-2">
+        <a href="/student/exams" class="btn btn-primary">Browse Exams</a>
+        <a href="/" class="btn btn-outline-light">Study Resources</a>
+      </div>
+    </div>
+  </div>
+</div>

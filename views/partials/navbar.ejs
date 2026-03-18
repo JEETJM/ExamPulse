@@ -1,0 +1,103 @@
+<!-- <nav class="navbar navbar-expand-lg premium-navbar">
+  
+  <div class="container">
+    <svg xmlns="http://www.w3.org/2000/svg" height="48px" viewBox="0 -960 960 960" width="48px" fill="#FFFFFF"><path d="M479-120 189-279v-240L40-600l439-240 441 240v317h-60v-282l-91 46v240L479-120Zm0-308 315-172-315-169-313 169 313 172Zm0 240 230-127v-168L479-360 249-485v170l230 127Zm1-240Zm-1 74Zm0 0Z"/></svg>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a class="navbar-brand fw-bold text-white" href="/">ExamSᴘʜᴇʀᴇ</a>
+
+    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+        <li class="nav-item">
+          <button type="button" class="btn btn-outline-light btn-sm" id="themeToggle">🌙 / ☀️</button>
+        </li>
+
+        <% if (!currentUser) { %>
+          <li class="nav-item"><a class="nav-link text-white" href="/login">Login</a></li>
+          <li class="nav-item"><a class="btn btn-light rounded-pill px-4" href="/register">Register</a></li>
+        <% } else { %>
+          <li class="nav-item"><a class="nav-link text-white" href="/auth/logout">Logout</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+
+
+ -->
+
+
+<nav class="navbar navbar-expand-lg premium-navbar">
+  <div class="container">
+    <svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" width="50"
+      height="50">
+      <path
+        d="M479-120 189-279v-240L40-600l439-240 441 240v317h-60v-282l-91 46v240L479-120Zm0-308 315-172-315-169-313 169 313 172Zm0 240 230-127v-168L479-360 249-485v170l230 127Z" />
+    </svg>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <a class="navbar-brand fw-bold text-white" href="/">ExamSᴘʜᴇʀᴇ</a>
+
+    <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+
+        <li class="nav-item">
+          <button type="button" class="btn btn-outline-light btn-sm" id="themeToggle">🌙 ☀️</button>
+        </li>
+
+        <% if (!currentUser) { %>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-light rounded-pill px-4" href="/register">Register</a>
+          </li>
+          <% } else { %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-white d-flex align-items-center gap-2" href="#" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="user-avatar">
+                  <%= currentUser.name ? currentUser.name.charAt(0).toUpperCase() : "U" %>
+                </span>
+                <span>
+                  <%= currentUser.name %>
+                </span>
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end premium-dropdown">
+                <% if (currentUser.role==="admin" ) { %>
+                  <li><a class="dropdown-item" href="/admin/dashboard">Admin Dashboard</a></li>
+                  <% } %>
+
+                    <% if (currentUser.role==="teacher" ) { %>
+                      <li><a class="dropdown-item" href="/teacher/dashboard">Teacher Dashboard</a></li>
+                      <% } %>
+
+                        <% if (currentUser.role==="student" ) { %>
+                          <li><a class="dropdown-item" href="/student/dashboard">Student Dashboard</a></li>
+                          <% } %>
+
+                            <li>
+                              <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="/auth/logout">Logout</a></li>
+              </ul>
+            </li>
+            <% } %>
+
+      </ul>
+    </div>
+  </div>
+</nav>

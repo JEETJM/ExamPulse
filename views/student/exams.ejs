@@ -1,0 +1,35 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+  <h2 class="fw-bold text-light">Available Exams</h2>
+</div>
+
+<div class="row g-4">
+  <% if (!exams || exams.length === 0) { %>
+    <div class="col-12">
+      <div class="glass-card p-4">
+        <h5 class="text-light mb-2">No exams available right now</h5>
+        <p class="text-light-emphasis mb-0">Published and approved exams will appear here.</p>
+      </div>
+    </div>
+  <% } %>
+
+  <% exams.forEach(exam => { %>
+    <div class="col-md-6 col-lg-4">
+      <div class="glass-card p-4 h-100 card-hover-lift">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <h4 class="text-light mb-0"><%= exam.title %></h4>
+          <span class="badge bg-primary">Live</span>
+        </div>
+
+        <p class="text-light-emphasis mb-3"><%= exam.description %></p>
+
+        <div class="mb-2 text-light"><strong>Subject:</strong> <%= exam.subject %></div>
+        <div class="mb-2 text-light"><strong>Duration:</strong> <%= exam.duration %> mins</div>
+        <div class="mb-3 text-light"><strong>Total Marks:</strong> <%= exam.totalMarks || 0 %></div>
+
+        <a href="/attempts/start/<%= exam._id %>" class="btn btn-primary w-100">Start Exam</a>
+      </div>
+    </div>
+  <% }) %>
+</div>
