@@ -1,1 +1,2 @@
-<!-- ExamSphere is a full-stack MEN Online Examination System designed for secure and efficient digital exams. It provides Student, Teacher, and Admin panels with authentication, exam management, question CRUD, timed exams, automatic result generation, analytics, notifications, announcements, and support management in one modern animated web platform. -->
+# ExamPulse
+This is a Full Online Based Exam Website
