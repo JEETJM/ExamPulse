@@ -47,46 +47,46 @@
 
 
 
-console.log("theme.js loaded");
-document.addEventListener("DOMContentLoaded", function () {
-  console.log("theme.js loaded");
+// console.log("theme.js loaded");
+// document.addEventListener("DOMContentLoaded", function () {
+//   console.log("theme.js loaded");
 
-  const themeToggle = document.getElementById("themeToggle");
+//   const themeToggle = document.getElementById("themeToggle");
 
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "light") {
-    document.body.classList.add("light-mode");
-  }
+//   const savedTheme = localStorage.getItem("theme");
+//   if (savedTheme === "light") {
+//     document.body.classList.add("light-mode");
+//   }
 
-  if (themeToggle) {
-    themeToggle.addEventListener("click", function () {
-      document.body.classList.toggle("light-mode");
+//   if (themeToggle) {
+//     themeToggle.addEventListener("click", function () {
+//       document.body.classList.toggle("light-mode");
 
-      if (document.body.classList.contains("light-mode")) {
-        localStorage.setItem("theme", "light");
-      } else {
-        localStorage.setItem("theme", "dark");
-      }
-    });
-  }
+//       if (document.body.classList.contains("light-mode")) {
+//         localStorage.setItem("theme", "light");
+//       } else {
+//         localStorage.setItem("theme", "dark");
+//       }
+//     });
+//   }
 
-  const toggleButtons = document.querySelectorAll(".password-toggle");
+//   const toggleButtons = document.querySelectorAll(".password-toggle");
 
-  toggleButtons.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      const targetId = btn.dataset.target;
-      const input = document.getElementById(targetId);
-      const icon = btn.querySelector(".material-icons-outlined");
+//   toggleButtons.forEach((btn) => {
+//     btn.addEventListener("click", function () {
+//       const targetId = btn.dataset.target;
+//       const input = document.getElementById(targetId);
+//       const icon = btn.querySelector(".material-icons-outlined");
 
-      if (!input) return;
+//       if (!input) return;
 
-      if (input.type === "password") {
-        input.type = "text";
-        if (icon) icon.textContent = "visibility_off";
-      } else {
-        input.type = "password";
-        if (icon) icon.textContent = "visibility";
-      }
-    });
-  });
-});
+//       if (input.type === "password") {
+//         input.type = "text";
+//         if (icon) icon.textContent = "visibility_off";
+//       } else {
+//         input.type = "password";
+//         if (icon) icon.textContent = "visibility";
+//       }
+//     });
+//   });
+// });
