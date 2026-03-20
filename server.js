@@ -11,7 +11,8 @@ const flash = require("connect-flash");
 const ejsMate = require("ejs-mate");
 const rateLimit = require("express-rate-limit");
 const connectDB = require("./config/db");
-
+const jwt = require("jsonwebtoken");
+const User = require("./models/User");
 dotenv.config();
 connectDB();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(morgan("dev"));
 app.use(helmet({ contentSecurityPolicy: false }));
 
@@ -54,10 +56,34 @@ app.use(
 
 app.use(flash());
 
-app.use((req, res, next) => {
+// app.use((req, res, next) => {
+//   res.locals.success = req.flash("success");
+//   res.locals.error = req.flash("error");
+//   res.locals.currentUser = null;
+//   next();
+// });
+
+app.use(async (req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.currentUser = null;
+
+  try {
+    const token = req.cookies.token;
+
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id).select("-password");
+
+      if (user) {
+        req.user = user;
+        res.locals.currentUser = user;
+      }
+    }
+  } catch (err) {
+    res.locals.currentUser = null;
+  }
+
   next();
 });
 
@@ -65,6 +91,7 @@ app.use("/auth", require("./routes/authRoutes"));
 app.use("/exams", require("./routes/examRoutes"));
 app.use("/attempts", require("./routes/attemptRoutes"));
 app.use("/admin", require("./routes/adminRoutes"));
+app.use("/profile", require("./routes/profileRoutes"));
 app.use("/", require("./routes/viewRoutes"));
 
 app.use((err, req, res, next) => {

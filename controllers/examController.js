@@ -1,6 +1,7 @@
 const Exam = require("../models/Exam");
 const Question = require("../models/Question");
-
+const Attempt = require("../models/Attempt");
+const Result = require("../models/Result");
 exports.createExam = async (req, res) => {
   try {
     const {
@@ -114,12 +115,6 @@ exports.publishExam = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
 exports.autoSaveAnswer = async (req, res) => {
   try {
     const { examId, questionId, selectedAnswer } = req.body;
@@ -139,7 +134,7 @@ exports.autoSaveAnswer = async (req, res) => {
     }
 
     const existingAnswer = attempt.answers.find(
-      (a) => a.questionId.toString() === questionId
+      (a) => a.questionId.toString() === questionId,
     );
 
     if (existingAnswer) {
@@ -158,13 +153,6 @@ exports.autoSaveAnswer = async (req, res) => {
     res.status(500).json({ success: false });
   }
 };
-
-
-
-
-
-
-
 
 exports.deleteQuestion = async (req, res) => {
   try {
@@ -222,6 +210,110 @@ exports.updateQuestion = async (req, res) => {
   } catch (err) {
     console.log("UPDATE QUESTION ERROR:", err);
     req.flash("error", "Update failed");
+    res.redirect("/teacher/dashboard");
+  }
+};
+
+
+
+
+
+
+exports.getEditExamPage = async (req, res) => {
+  try {
+    const exam = await Exam.findOne({
+      _id: req.params.id,
+      createdBy: req.user._id,
+    });
+
+    if (!exam) {
+      req.flash("error", "Exam not found");
+      return res.redirect("/teacher/dashboard");
+    }
+
+    res.render("teacher/edit-exam", {
+      title: "Edit Exam",
+      exam,
+    });
+  } catch (err) {
+    console.log("GET EDIT EXAM ERROR:", err);
+    req.flash("error", "Unable to open edit page");
+    res.redirect("/teacher/dashboard");
+  }
+};
+
+exports.updateExam = async (req, res) => {
+  try {
+    const exam = await Exam.findOne({
+      _id: req.params.id,
+      createdBy: req.user._id,
+    });
+
+    if (!exam) {
+      req.flash("error", "Exam not found");
+      return res.redirect("/teacher/dashboard");
+    }
+
+    exam.title = req.body.title;
+    exam.description = req.body.description;
+    exam.subject = req.body.subject;
+    exam.duration = req.body.duration;
+    exam.passingMarks = req.body.passingMarks;
+    exam.startTime = req.body.startTime;
+    exam.endTime = req.body.endTime;
+
+    await exam.save();
+
+    req.flash("success", "Exam updated successfully");
+    res.redirect("/teacher/dashboard");
+  } catch (err) {
+    console.log("UPDATE EXAM ERROR:", err);
+    req.flash("error", "Exam update failed");
+    res.redirect("/teacher/dashboard");
+  }
+};
+
+exports.deleteExam = async (req, res) => {
+  try {
+    const exam = await Exam.findOne({
+      _id: req.params.id,
+      createdBy: req.user._id,
+    });
+
+    if (!exam) {
+      req.flash("error", "Exam not found");
+      return res.redirect("/teacher/dashboard");
+    }
+
+    await Question.deleteMany({ exam: exam._id });
+    await Result.deleteMany({ exam: exam._id });
+    await Exam.findByIdAndDelete(exam._id);
+
+    req.flash("success", "Exam deleted successfully");
+    res.redirect("/teacher/dashboard");
+  } catch (err) {
+    console.log("DELETE EXAM ERROR:", err);
+    req.flash("error", "Exam delete failed");
+    res.redirect("/teacher/dashboard");
+  }
+};
+
+exports.getEditQuestionPage = async (req, res) => {
+  try {
+    const question = await Question.findById(req.params.id).populate("exam");
+
+    if (!question) {
+      req.flash("error", "Question not found");
+      return res.redirect("/teacher/dashboard");
+    }
+
+    res.render("teacher/edit-question", {
+      title: "Edit Question",
+      question,
+    });
+  } catch (err) {
+    console.log("GET EDIT QUESTION ERROR:", err);
+    req.flash("error", "Unable to open edit question page");
     res.redirect("/teacher/dashboard");
   }
 };

@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="glass-card p-4 mx-auto" style="max-width: 400px;">
+        <h3 class="text-light mb-4 text-center">Admin Login</h3>
+
+        <form action="/auth/admin/login" method="POST">
+
+            <div class="mb-3">
+                <label class="form-label text-light">Email</label>
+                <input type="email" name="email" class="form-control premium-input" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-light">Password</label>
+                <div class="password-wrap">
+                    <input type="password" name="password" id="adminPassword"
+                        class="form-control premium-input password-input" required>
+                    <button type="button" class="password-toggle" data-target="adminPassword">
+                        <span class="material-icons-outlined">visibility</span>
+                    </button>
+                </div>
+            </div>
+
+            <button class="btn btn-danger w-100">Login as Admin</button>
+
+        </form>
+    </div>

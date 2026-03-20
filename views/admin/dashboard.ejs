@@ -1,56 +1,444 @@
 <% layout('layouts/boilerplate') %>
 
-<h2 class="fw-bold text-light mb-4">Admin Dashboard</h2>
+  <h2 class="fw-bold text-light mb-4">Admin Dashboard</h2>
 
-<div class="row g-4 mb-4">
-  <div class="col-md-6 col-lg-3">
-    <div class="glass-card p-4 dashboard-stat">
-      <h6 class="text-light-emphasis">Students</h6>
-      <h2 class="text-light"><%= totalStudents %></h2>
+  <div class="row g-4 mb-4">
+    <div class="col-md-6 col-lg-3">
+      <div class="glass-card p-4 dashboard-stat">
+        <h6 class="text-light-emphasis">Students</h6>
+        <h2 class="text-light">
+          <%= totalStudents %>
+        </h2>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="glass-card p-4 dashboard-stat">
+        <h6 class="text-light-emphasis">Teachers</h6>
+        <h2 class="text-light">
+          <%= totalTeachers %>
+        </h2>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="glass-card p-4 dashboard-stat">
+        <h6 class="text-light-emphasis">Pending Teachers</h6>
+        <h2 class="text-light">
+          <%= pendingTeachers.length %>
+        </h2>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="glass-card p-4 dashboard-stat">
+        <h6 class="text-light-emphasis">Pending Students</h6>
+        <h2 class="text-light">
+          <%= pendingStudents.length %>
+        </h2>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+      <div class="glass-card p-4 dashboard-stat">
+        <h6 class="text-light-emphasis">Total Exams</h6>
+        <h2 class="text-light">
+          <%= exams.length %>
+        </h2>
+      </div>
     </div>
   </div>
-  <div class="col-md-6 col-lg-3">
-    <div class="glass-card p-4 dashboard-stat">
-      <h6 class="text-light-emphasis">Teachers</h6>
-      <h2 class="text-light"><%= totalTeachers %></h2>
+
+
+
+<div class="glass-card p-4 mt-5">
+  <h4 class="text-light mb-3">Create Announcement</h4>
+
+  <form action="/admin/announcements/create" method="POST">
+    <div class="mb-3">
+      <label class="form-label text-light">Title</label>
+      <input type="text" name="title" class="form-control premium-input" required>
     </div>
-  </div>
-  <div class="col-md-6 col-lg-3">
-    <div class="glass-card p-4 dashboard-stat">
-      <h6 class="text-light-emphasis">Pending Teachers</h6>
-      <h2 class="text-light"><%= pendingTeachers.length %></h2>
+
+    <div class="mb-3">
+      <label class="form-label text-light">Message</label>
+      <textarea name="message" rows="4" class="form-control premium-input" required></textarea>
     </div>
-  </div>
-  <div class="col-md-6 col-lg-3">
-    <div class="glass-card p-4 dashboard-stat">
-      <h6 class="text-light-emphasis">Total Exams</h6>
-      <h2 class="text-light"><%= exams.length %></h2>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label text-light">Start Date & Time</label>
+        <input type="datetime-local" name="startDate" class="form-control premium-input" required>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label text-light">End Date & Time</label>
+        <input type="datetime-local" name="endDate" class="form-control premium-input" required>
+      </div>
     </div>
-  </div>
+
+    <button class="btn btn-primary px-4">Post Announcement</button>
+  </form>
 </div>
+<br><br>
 
-<div class="glass-card p-4 mb-5">
-  <h4 class="text-light mb-3">Pending Teacher Approvals</h4>
-  <% if (!pendingTeachers.length) { %>
-    <div class="alert alert-success">No pending teacher approvals.</div>
-  <% } else { %>
+
+
+  <div class="glass-card p-4 mb-5">
+    <h4 class="text-light mb-3">Pending Teacher Approvals</h4>
+    <% if (!pendingTeachers.length) { %>
+      <div class="alert alert-success">No pending teacher approvals.</div>
+      <% } else { %>
+        <div class="table-responsive">
+          <table class="table table-dark table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% pendingTeachers.forEach(teacher=> { %>
+                <tr>
+                  <td>
+                    <%= teacher.name %>
+                  </td>
+                  <td>
+                    <%= teacher.email %>
+                  </td>
+                  <td>
+                    <form action="/admin/teachers/<%= teacher._id %>/approve" method="POST">
+                      <button class="btn btn-success btn-sm">Approve</button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <% } %>
+  </div>
+
+  <!-- <div class="glass-card p-4">
+    <h4 class="text-light mb-3">Exam Approval Panel</h4>
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Teacher</th>
+            <th>Approved</th>
+            <th>Published</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% exams.forEach(exam=> { %>
+            <tr>
+              <td>
+                <%= exam.title %>
+              </td>
+              <td>
+                <%= exam.createdBy?.name || "N/A" %>
+              </td>
+              <td>
+                <% if (exam.isApproved) { %>
+                  <span class="badge bg-success">Approved</span>
+                  <% } else { %>
+                    <span class="badge bg-warning text-dark">Pending</span>
+                    <% } %>
+              </td>
+              <td>
+                <% if (exam.isPublished) { %>
+                  <span class="badge bg-primary">Published</span>
+                  <% } else { %>
+                    <span class="badge bg-secondary">Not Published</span>
+                    <% } %>
+              </td>
+
+
+
+              <td>
+                <% if (!exam.isApproved) { %>
+                  <form action="/admin/exams/<%= exam._id %>/approve" method="POST" class="d-inline">
+                    <button class="btn btn-primary btn-sm">Approve Exam</button>
+                  </form>
+                  <% } else { %>
+                    <button class="btn btn-success btn-sm" disabled>Done</button>
+                    <% } %>
+
+                      <form action="/admin/exams/<%= exam._id %>/delete" method="POST" class="d-inline">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                      </form>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div> -->
+  <br>
+
+  <div class="glass-card p-4">
+    <h4 class="text-light mb-3">Exam Approval Panel</h4>
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Teacher</th>
+            <th>Approved</th>
+            <th>Published</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% exams.forEach(exam=> { %>
+            <tr>
+              <td>
+                <%= exam.title %>
+              </td>
+              <td>
+                <%= exam.createdBy?.name || "N/A" %>
+              </td>
+              <td>
+                <% if (exam.isApproved) { %>
+                  <span class="badge bg-success">Approved</span>
+                  <% } else { %>
+                    <span class="badge bg-warning text-dark">Pending</span>
+                    <% } %>
+              </td>
+              <td>
+                <% if (exam.isPublished) { %>
+                  <span class="badge bg-primary">Published</span>
+                  <% } else { %>
+                    <span class="badge bg-secondary">Not Published</span>
+                    <% } %>
+              </td>
+              <td>
+                <% if (!exam.isApproved) { %>
+                  <form action="/admin/exams/<%= exam._id %>/approve" method="POST" class="d-inline">
+                    <button class="btn btn-primary btn-sm">Approve Exam</button>
+                  </form>
+                  <% } else { %>
+                    <button class="btn btn-success btn-sm" disabled>Done</button>
+                    <% } %>
+
+                      <form action="/admin/exams/<%= exam._id %>/delete" method="POST" class="d-inline">
+                        <button class="btn btn-danger btn-sm">Delete</button>
+                      </form>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <br><br>
+
+
+  <div class="glass-card p-4 mb-5">
+    <h4 class="text-light mb-3">Pending Student Approvals</h4>
+
+    <% if (!pendingStudents || !pendingStudents.length) { %>
+      <div class="alert alert-success">No pending student approvals.</div>
+      <% } else { %>
+        <div class="table-responsive">
+          <table class="table table-dark table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Batch</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% pendingStudents.forEach(student=> { %>
+                <tr>
+                  <td>
+                    <%= student.name %>
+                  </td>
+                  <td>
+                    <%= student.email %>
+                  </td>
+                  <td>
+                    <%= student.department || "N/A" %>
+                  </td>
+                  <td>
+                    <%= student.batch || "N/A" %>
+                  </td>
+                  <td>
+                    <form action="/admin/students/<%= student._id %>/approve" method="POST">
+                      <button class="btn btn-success btn-sm">Approve</button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <% } %>
+  </div>
+
+
+  <!-- <div class="glass-card p-4 mt-5">
+    <h4 class="text-light mb-3">All Users</h4>
     <div class="table-responsive">
       <table class="table table-dark table-hover align-middle">
         <thead>
           <tr>
             <th>Name</th>
             <th>Email</th>
+            <th>Role</th>
+            <th>Department</th>
+            <th>Batch</th>
+            <th>Approved</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <% pendingTeachers.forEach(teacher => { %>
+          <% users.forEach(user=> { %>
             <tr>
-              <td><%= teacher.name %></td>
-              <td><%= teacher.email %></td>
               <td>
-                <form action="/admin/teachers/<%= teacher._id %>/approve" method="POST">
-                  <button class="btn btn-success btn-sm">Approve</button>
+                <%= user.name %>
+              </td>
+              <td>
+                <%= user.email %>
+              </td>
+              <td><span class="badge bg-primary">
+                  <%= user.role %>
+                </span></td>
+              <td>
+                <%= user.department || "N/A" %>
+              </td>
+              <td>
+                <%= user.batch || "N/A" %>
+              </td>
+              <td>
+                <% if (user.isApproved) { %>
+                  <span class="badge bg-success">Yes</span>
+                  <% } else { %>
+                    <span class="badge bg-warning text-dark">No</span>
+                    <% } %>
+              </td>
+
+
+
+
+              <td>
+                <% if (user.role !=="admin" ) { %>
+                  <form action="/admin/users/<%= user._id %>/delete" method="POST" class="d-inline">
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                  <% } else { %>
+                    <button class="btn btn-secondary btn-sm" disabled>Protected</button>
+                    <% } %>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div> -->
+
+
+
+
+
+
+
+
+
+  <div class="glass-card p-4 mt-5">
+    <h4 class="text-light mb-3">All Users</h4>
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Department</th>
+            <th>Batch</th>
+            <th>Approved</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(user=> { %>
+            <tr>
+              <td>
+                <%= user.name %>
+              </td>
+              <td>
+                <%= user.email %>
+              </td>
+              <td><span class="badge bg-primary">
+                  <%= user.role %>
+                </span></td>
+              <td>
+                <%= user.department || "N/A" %>
+              </td>
+              <td>
+                <%= user.batch || "N/A" %>
+              </td>
+              <td>
+                <% if (user.isApproved) { %>
+                  <span class="badge bg-success">Yes</span>
+                  <% } else { %>
+                    <span class="badge bg-warning text-dark">No</span>
+                    <% } %>
+              </td>
+              <td>
+                <% if (user.role !=="admin" ) { %>
+                  <form action="/admin/users/<%= user._id %>/delete" method="POST" class="d-inline">
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                  <% } else { %>
+                    <button class="btn btn-secondary btn-sm" disabled>Protected</button>
+                    <% } %>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+
+
+  <div class="glass-card p-4 mt-5">
+  <h4 class="text-light mb-3">All Announcements</h4>
+
+  <% if (!announcements || announcements.length === 0) { %>
+    <div class="alert alert-warning">No announcements yet.</div>
+  <% } else { %>
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Message</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Posted By</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% announcements.forEach(item => { %>
+            <tr>
+              <td><%= item.title %></td>
+              <td><%= item.message %></td>
+              <td><%= new Date(item.startDate).toLocaleString() %></td>
+              <td><%= new Date(item.endDate).toLocaleString() %></td>
+              <td><%= item.createdBy?.name || "Admin" %></td>
+              <td>
+                <form action="/admin/announcements/<%= item._id %>/delete" method="POST">
+                  <button class="btn btn-danger btn-sm">Delete</button>
                 </form>
               </td>
             </tr>
@@ -61,50 +449,48 @@
   <% } %>
 </div>
 
-<div class="glass-card p-4">
-  <h4 class="text-light mb-3">Exam Approval Panel</h4>
-  <div class="table-responsive">
-    <table class="table table-dark table-hover align-middle">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Teacher</th>
-          <th>Approved</th>
-          <th>Published</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% exams.forEach(exam => { %>
+
+
+
+
+
+
+  <div class="glass-card p-4 mt-5">
+    <h4 class="text-light mb-3">All Results</h4>
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle">
+        <thead>
           <tr>
-            <td><%= exam.title %></td>
-            <td><%= exam.createdBy?.name || "N/A" %></td>
-            <td>
-              <% if (exam.isApproved) { %>
-                <span class="badge bg-success">Approved</span>
-              <% } else { %>
-                <span class="badge bg-warning text-dark">Pending</span>
-              <% } %>
-            </td>
-            <td>
-              <% if (exam.isPublished) { %>
-                <span class="badge bg-primary">Published</span>
-              <% } else { %>
-                <span class="badge bg-secondary">Not Published</span>
-              <% } %>
-            </td>
-            <td>
-              <% if (!exam.isApproved) { %>
-                <form action="/admin/exams/<%= exam._id %>/approve" method="POST">
-                  <button class="btn btn-primary btn-sm">Approve Exam</button>
-                </form>
-              <% } else { %>
-                <button class="btn btn-success btn-sm" disabled>Done</button>
-              <% } %>
-            </td>
+            <th>Student</th>
+            <th>Exam</th>
+            <th>Marks</th>
+            <th>Percentage</th>
+            <th>Status</th>
           </tr>
-        <% }) %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% results.forEach(result=> { %>
+            <tr>
+              <td>
+                <%= result.student?.name || "N/A" %>
+              </td>
+              <td>
+                <%= result.exam?.title || "N/A" %>
+              </td>
+              <td>
+                <%= result.obtainedMarks %> / <%= result.totalMarks %>
+              </td>
+              <td>
+                <%= result.percentage.toFixed(2) %>%
+              </td>
+              <td>
+                <span class="badge <%= result.status === 'Pass' ? 'bg-success' : 'bg-danger' %>">
+                  <%= result.status %>
+                </span>
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>

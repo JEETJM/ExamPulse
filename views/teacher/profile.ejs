@@ -1,0 +1,71 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="glass-card p-4 mb-4 text-center">
+  <% if (user.profilePhoto) { %>
+    <img src="<%= user.profilePhoto %>" alt="Profile Photo" class="profile-page-photo mb-3">
+  <% } else { %>
+    <div class="profile-page-fallback mb-3">
+      <%= user.name ? user.name.charAt(0).toUpperCase() : "U" %>
+    </div>
+  <% } %>
+
+  <h3 class="text-light mb-1"><%= user.name %></h3>
+  <p class="text-light-emphasis mb-0 text-capitalize">Teacher</p>
+</div>
+
+<div class="glass-card p-4">
+  <h2 class="text-light mb-4">Teacher Profile</h2>
+
+  <form action="/profile/update" method="POST" enctype="multipart/form-data">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <label class="form-label text-light">Name</label>
+        <input type="text" name="name" value="<%= user.name %>" class="form-control premium-input" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label text-light">Email</label>
+        <input type="email" name="email" value="<%= user.email %>" class="form-control premium-input" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label text-light">Department</label>
+        <input type="text" name="department" value="<%= user.department || '' %>" class="form-control premium-input">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label text-light">Batch</label>
+        <input type="text" name="batch" value="<%= user.batch || '' %>" class="form-control premium-input">
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label text-light">Profile Photo</label>
+        <input type="file" name="profilePhoto" class="form-control premium-input file-upload-input" accept="image/*">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label text-light">Current Password</label>
+        <div class="password-wrap">
+          <input type="password" name="currentPassword" id="teacherCurrentPassword" class="form-control premium-input password-input">
+          <button type="button" class="password-toggle" data-target="teacherCurrentPassword">
+            <span class="material-icons-outlined">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label text-light">New Password</label>
+        <div class="password-wrap">
+          <input type="password" name="newPassword" id="teacherNewPassword" class="form-control premium-input password-input">
+          <button type="button" class="password-toggle" data-target="teacherNewPassword">
+            <span class="material-icons-outlined">visibility</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <button class="btn btn-primary px-4">Update Profile</button>
+    </div>
+  </form>
+</div>

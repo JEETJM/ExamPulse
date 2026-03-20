@@ -1,0 +1,45 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="glass-card p-4">
+  <h2 class="text-light mb-4">Edit Exam</h2>
+
+  <form action="/exams/<%= exam._id %>/update" method="POST">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label text-light">Title</label>
+        <input type="text" name="title" value="<%= exam.title %>" class="form-control premium-input" required>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label text-light">Subject</label>
+        <input type="text" name="subject" value="<%= exam.subject %>" class="form-control premium-input" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label text-light">Description</label>
+      <textarea name="description" rows="3" class="form-control premium-input" required><%= exam.description %></textarea>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <label class="form-label text-light">Duration</label>
+        <input type="number" name="duration" value="<%= exam.duration %>" class="form-control premium-input" required>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label class="form-label text-light">Passing Marks</label>
+        <input type="number" name="passingMarks" value="<%= exam.passingMarks %>" class="form-control premium-input" required>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label class="form-label text-light">Start Time</label>
+        <input type="datetime-local" name="startTime" value="<%= new Date(exam.startTime).toISOString().slice(0,16) %>" class="form-control premium-input" required>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label class="form-label text-light">End Time</label>
+        <input type="datetime-local" name="endTime" value="<%= new Date(exam.endTime).toISOString().slice(0,16) %>" class="form-control premium-input" required>
+      </div>
+    </div>
+
+    <button class="btn btn-primary px-4">Update Exam</button>
+    <a href="/teacher/dashboard" class="btn btn-outline-light px-4">Back</a>
+  </form>
+</div>

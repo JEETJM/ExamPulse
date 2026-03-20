@@ -90,6 +90,41 @@
   </div>
 </div>
 
+
+
+<div class="glass-card p-4 mt-4">
+  <h4 class="text-light mb-3">Announcements</h4>
+
+  <% if (!announcements || announcements.length === 0) { %>
+    <div class="alert alert-warning mb-0">
+      No announcements available.
+    </div>
+  <% } else { %>
+
+    <% announcements.forEach(item => { %>
+
+      <div class="notice-item mb-3">
+        <h6 class="text-light mb-1">
+          <%= item.title %>
+        </h6>
+
+        <p class="text-light-emphasis mb-1">
+          <%= item.message %>
+        </p>
+
+        <small class="text-light-emphasis">
+          <%= new Date(item.startDate).toLocaleDateString() %>
+          →
+          <%= new Date(item.endDate).toLocaleDateString() %>
+        </small>
+      </div>
+
+    <% }) %>
+
+  <% } %>
+</div>
+<br>
+
 <div class="row g-4">
   <div class="col-lg-8">
     <div class="glass-card p-4 mb-4">
@@ -138,6 +173,7 @@
       </div>
     </div>
   </div>
+  
 
   <div class="col-lg-4">
     <div class="glass-card p-4 mb-4">
@@ -154,7 +190,7 @@
       <h4 class="text-light mb-3">Quick Actions</h4>
       <div class="d-grid gap-2">
         <a href="/student/exams" class="btn btn-primary">Browse Exams</a>
-        <a href="/" class="btn btn-outline-light">Study Resources</a>
+        <a href="https://drive.google.com/drive/folders/1O7WVpqd5f4pYk5AelpoKtF2f_d1jdWrj" class="btn btn-outline-light">Study Resources pyq</a>
       </div>
     </div>
   </div>
