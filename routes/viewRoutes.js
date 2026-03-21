@@ -43,7 +43,9 @@ router.get(
   async (req, res) => {
     const results = await Result.find({
       student: req.user._id,
-    }).populate("exam");
+    })
+      .populate("exam")
+      .lean();
 
     const now = new Date();
 
@@ -76,11 +78,15 @@ router.get(
 
     const questions = await Question.find({
       exam: { $in: examIds },
-    }).populate("exam");
+    })
+      .populate("exam")
+      .lean();
 
     const results = await Result.find({
       exam: { $in: examIds },
-    }).populate("student exam");
+    })
+      .populate("student exam")
+      .lean();
 
     const now = new Date();
 
@@ -155,7 +161,7 @@ router.get(
 
     const users = await User.find().sort({ createdAt: -1 });
     const results = await Result.find()
-      .populate("student exam")
+      .populate("student exam").lean()
       .sort({ createdAt: -1 });
 
     res.render("admin/dashboard", {

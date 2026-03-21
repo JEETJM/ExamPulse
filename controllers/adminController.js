@@ -131,7 +131,7 @@ exports.adminDashboard = async (req, res) => {
       };
     }
 
-    const users = await User.find(userQuery).sort({ createdAt: -1 });
+    const users = await User.find(userQuery).sort({ createdAt: -1 }).lean();
 
     const results = await Result.find()
       .populate("student", "name email")
@@ -140,7 +140,7 @@ exports.adminDashboard = async (req, res) => {
 
     const announcements = await Announcement.find()
       .populate("createdBy", "name")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 }).lean();
 
     res.render("admin/dashboard", {
       title: "Admin Dashboard",

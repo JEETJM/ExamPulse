@@ -13,6 +13,7 @@ const rateLimit = require("express-rate-limit");
 const connectDB = require("./config/db");
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
+const compression = require("compression");
 dotenv.config();
 connectDB();
 
@@ -26,17 +27,27 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(methodOverride("_method"));
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    maxAge: "7d", // 7 days cache
+  }),
+);
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"), {
+    maxAge: "7d",
+  }),
+);
 app.use(morgan("dev"));
 app.use(helmet({ contentSecurityPolicy: false }));
+app.use(compression());
 
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 300,
     message: "Too many requests. Please try again later.",
-  })
+  }),
 );
 
 app.use(
@@ -51,7 +62,7 @@ app.use(
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
     },
-  })
+  }),
 );
 
 app.use(flash());

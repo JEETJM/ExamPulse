@@ -1,4 +1,4 @@
-# ExamPulse
+<!-- # ExamPulse
 This is a Full Online Based Exam Website
 
 
@@ -26,4 +26,4 @@ This is a Full Online Based Exam Website
 
 <img src="https://img.shields.io/badge/Follow%20Me-GitHub-181717?style=for-the-badge&logo=github" />
 
-</div>
+</div> -->
